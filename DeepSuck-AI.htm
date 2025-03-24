@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSuck Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .chat-box {
+            width: 90%;
+            max-width: 500px;
+            height: 70vh;
+            overflow-y: auto;
+            border: 1px solid #333;
+            padding: 10px;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            word-wrap: break-word;
+        }
+        .user {
+            background-color: #007bff;
+            color: white;
+            align-self: flex-end;
+        }
+        .bot {
+            background-color: #444;
+            align-self: flex-start;
+        }
+        .input-box {
+            display: flex;
+            margin-top: 10px;
+            width: 90%;
+            max-width: 500px;
+        }
+        input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            margin-left: 5px;
+            border-radius: 5px;
+        }
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .loading::after {
+            content: "";
+            width: 10px;
+            height: 10px;
+            border: 2px solid white;
+            border-top-color: transparent;
+            border-radius: 50%;
+            display: inline-block;
+            animation: spin 1s linear infinite;
+            margin-left: 5px;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <h1>DeepSuck Chatbot——安全可信的人工智能助手</h1>
+    <div class="chat-box" id="chat-box"></div>
+    <div class="input-box">
+        <input type="text" id="user-input" placeholder="输入你的消息...">
+        <button onclick="sendMessage()">发送</button>
+        <button onclick="clearChat()" style="background-color: red;">清除</button>
+    </div>
+    <script>
+        let responses = ["典", "孝", "急", "乐", "绷", "赢", "麻", "那你去找物管啊"];
+        function sendMessage() {
+            const inputField = document.getElementById("user-input");
+            const message = inputField.value.trim();
+            if (!message) return;
+            
+            const chatBox = document.getElementById("chat-box");
+            chatBox.innerHTML += `<div class='message user'>${message}</div>`;
+            inputField.value = "";
+            
+            const loadingIndicator = document.createElement("div");
+            loadingIndicator.className = "message bot loading";
+            loadingIndicator.textContent = "思考中";
+            chatBox.appendChild(loadingIndicator);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            
+            setTimeout(() => {
+                chatBox.removeChild(loadingIndicator);
+                const botMessage = responses[Math.floor(Math.random() * responses.length)];
+                chatBox.innerHTML += `<div class='message bot'>${botMessage}</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 1500);
+        }
+
+        function clearChat() {
+            document.getElementById("chat-box").innerHTML = "";
+        }
+    </script>
+</body>
+</html>
